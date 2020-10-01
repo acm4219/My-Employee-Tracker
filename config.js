@@ -1,4 +1,4 @@
 modules.export = {
-  user: "",
-  password: "",
+  user: "employeeDB_admin",
+  password: "EmployeeRecorder",
 };
