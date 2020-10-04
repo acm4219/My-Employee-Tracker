@@ -1,6 +1,8 @@
 const util = require("util");
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+var figlet = require("figlet");
+const cTable = require("console.table");
 // const { user, password } = require("../My-Employee-Tracker/config");
 const connection = mysql.createConnection({
   host: "localhost",
@@ -8,7 +10,14 @@ const connection = mysql.createConnection({
   password: "EmployeeRecorder",
   database: "employees",
 });
-
+figlet("Employee Tracker", function (err, data) {
+  if (err) {
+    console.log("Something went wrong...");
+    console.dir(err);
+    return;
+  }
+  console.log(data);
+});
 connection.connect(function (err) {
   if (err) throw err;
   // run the start function after the connection is made to prompt the user
@@ -49,24 +58,76 @@ function addEmployeePrompt() {
   inquirer
     .prompt([
       {
-        name: "name",
+        name: "firstName",
         type: "input",
-        message: "What is your name?",
+        message: "What is your first name?",
       },
       {
-        name: "id",
+        name: "lastName",
         type: "input",
-        message: "What is your id number",
+        message: "What is your last name?",
+      },
+      {
+        name: "roleId",
+        type: "input",
+        message: "What is your id number?",
+      },
+      {
+        name: "manager",
+        type: "input",
+        message: "What is your Manager's Name?",
+      },
+      {
+        name: "title",
+        type: "input",
+        message: "What is your Title?",
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is your Salary?",
+      },
+      {
+        name: "departmentId",
+        type: "input",
+        message: "What is your Department's Id?",
+      },
+      {
+        name: "departmentName",
+        type: "input",
+        message: "What is your Department name?",
       },
     ])
-    .then(() => {
+    .then((answers) => {
+      connection.query("INSERT INTO employee_info SET ?", {
+        first_name: answers.firstName,
+        last_name: answers.lastName,
+        role_id: answers.roleId,
+        manager_name: answers.manager,
+      });
+      connection.query("INSERT INTO roles SET ?", {
+        title: answers.title,
+        salary: answers.salary,
+        department_id: answers.departmentId,
+      });
+      connection.query("INSERT INTO department SET ?", {
+        name: answers.departmentName,
+        department_id: answers.departmentId,
+      });
       start();
     });
 }
 
 function viewAllEmployees() {
   console.log("Working!");
-  start();
+  connection.query(
+    "SELECT * FROM employee_info INNER JOIN roles ON employee_info.id = roles.id",
+    function (err, results) {
+      if (err) throw err;
+      console.table(results);
+      start();
+    }
+  );
 }
 
 function updateEmployee() {
@@ -76,7 +137,11 @@ function updateEmployee() {
 
 function viewDepartments() {
   console.log("Working!");
-  start();
+  connection.query("SELECT * FROM department", function (err, results) {
+    if (err) throw err;
+    console.table(results);
+    start();
+  });
 }
 connection.query = util.promisify(connection.query);
 
