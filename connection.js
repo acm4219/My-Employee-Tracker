@@ -132,9 +132,104 @@ function viewAllEmployees() {
 
 function updateEmployee() {
   console.log("Working!");
-  start();
+  connection.query("SELECT * FROM employee_info", function (err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          name: "choice",
+          type: "rawlist",
+          message: "Which Employee Record will you change?",
+          choices: function () {
+            var choiceArray = [];
+            for (var i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].id);
+            }
+            return choiceArray;
+          },
+        },
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is your first name?",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is your last name?",
+        },
+        {
+          name: "roleId",
+          type: "input",
+          message: "What is your id number?",
+        },
+        {
+          name: "manager",
+          type: "input",
+          message: "What is your Manager's Name?",
+        },
+        {
+          name: "title",
+          type: "input",
+          message: "What is your Title?",
+        },
+        {
+          name: "salary",
+          type: "input",
+          message: "What is your Salary?",
+        },
+        {
+          name: "departmentId",
+          type: "input",
+          message: "What is your Department's Id?",
+        },
+        {
+          name: "departmentName",
+          type: "input",
+          message: "What is your Department name?",
+        },
+      ])
+      .then((answers) => {
+        var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].id === answers.choice) {
+            chosenItem = results[i];
+          }
+        }
+        connection.query("UPDATE employee_info SET ? WHERE ?", [
+          {
+            first_name: answers.firstName,
+            last_name: answers.lastName,
+            role_id: answers.roleId,
+            manager_name: answers.manager,
+          },
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        connection.query("UPDATE roles SET ? WHERE ?", [
+          {
+            title: answers.title,
+            salary: answers.salary,
+            department_id: answers.departmentId,
+          },
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        connection.query("UPDATE department SET ? WHERE ?", [
+          {
+            name: answers.departmentName,
+            department_id: answers.departmentId,
+          },
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        start();
+      });
+  });
 }
-
 function viewDepartments() {
   console.log("Working!");
   connection.query("SELECT * FROM department", function (err, results) {
