@@ -35,6 +35,7 @@ function start() {
         "Add Employee",
         "Update Employee Info",
         "View Departments",
+        "Remove Employee",
         "Exit",
       ],
     })
@@ -47,6 +48,8 @@ function start() {
         updateEmployee();
       } else if (answer.employeeList === "View Departments") {
         viewDepartments();
+      } else if (answer.employeeList === "Remove Employee") {
+        deleteEmployee();
       } else if (answer.employeeList === "Exit") {
         connection.end();
       }
@@ -54,7 +57,7 @@ function start() {
 }
 
 function addEmployeePrompt() {
-  console.log("Working");
+  console.log("Let's Add Some Folks:");
   inquirer
     .prompt([
       {
@@ -119,7 +122,7 @@ function addEmployeePrompt() {
 }
 
 function viewAllEmployees() {
-  console.log("Working!");
+  console.log("The Gang's All Here:");
   connection.query(
     "SELECT * FROM employee_info INNER JOIN roles ON employee_info.id = roles.id",
     function (err, results) {
@@ -131,7 +134,7 @@ function viewAllEmployees() {
 }
 
 function updateEmployee() {
-  console.log("Working!");
+  console.log("Let's Switch it up!");
   connection.query("SELECT * FROM employee_info", function (err, results) {
     if (err) throw err;
     inquirer
@@ -230,8 +233,55 @@ function updateEmployee() {
       });
   });
 }
+
+function deleteEmployee() {
+  console.log("We'll Miss You, sad face:");
+  connection.query("SELECT * FROM employee_info", function (err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          name: "choice",
+          type: "rawlist",
+          message: "Which Employee Record will you change?",
+          choices: function () {
+            var choiceArray = [];
+            for (var i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].id);
+            }
+            return choiceArray;
+          },
+        },
+      ])
+      .then((answers) => {
+        var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].id === answers.choice) {
+            chosenItem = results[i];
+          }
+        }
+        connection.query("DELETE FROM employee_info WHERE ?", [
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        connection.query("DELETE FROM roles WHERE ?", [
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        connection.query("DELETE FROM department WHERE ?", [
+          {
+            id: chosenItem.id,
+          },
+        ]);
+        start();
+      });
+  });
+}
+
 function viewDepartments() {
-  console.log("Working!");
+  console.log("Where do I go?");
   connection.query("SELECT * FROM department", function (err, results) {
     if (err) throw err;
     console.table(results);
