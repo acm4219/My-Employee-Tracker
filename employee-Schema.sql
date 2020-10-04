@@ -1,3 +1,6 @@
+drop DATABASE if not EXISTS employees;
+CREATE DATABASE employees;
+use employees;
 create table employee_info
 (
     id int
