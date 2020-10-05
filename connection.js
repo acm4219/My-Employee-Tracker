@@ -3,11 +3,11 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 var figlet = require("figlet");
 const cTable = require("console.table");
-// const { user, password } = require("../My-Employee-Tracker/config");
+const { user, password } = require("./config");
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "employeeDB_admin",
-  password: "EmployeeRecorder",
+  user: user,
+  password: password,
   database: "employees",
 });
 figlet("Employee Tracker", function (err, data) {
