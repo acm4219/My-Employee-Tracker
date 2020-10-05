@@ -1,37 +1,16 @@
-## Welcome to GitHub Pages
+## My Employee Tracker
 
-You can use the [editor on GitHub](https://github.com/acm4219/My-Employee-Tracker/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### Description
+This application is a recording application to keep track of your employee records. With this application you'll be able to view your employees, view the departments they're in, add more employees, update their info and remove them if needed. The CLI is really streamlined with a simple to use interface that anyone can use.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Demo 
+[Live Demo](https://acm4219.github.io/My-Employee-Tracker/MyEmployeeTrackerDemo.mp4)
 
-### Markdown
+### Usage
+To use this application you need to create and connect to the database in MySQL, there is a seed in the files that you can copy from to directly create the format that was used in the code. From there you need to set up your config.js and your access to your server, which an example is provided in the folder and in the schema respectively. When you are able to connect with the server you'll be able to navigate through your options and select what you would like to do. You can add an employee by following the prompts provided by the choice made. To be sure that it's correct you can view all employees with the selection view all employees and view all departments options to see what you entered. If it's not correct it's no worries you can update it with the update employee option. If someone unfortunately leaves the company then you can delete their data with the Remove Employee option.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Challenges
+Surprisingly this project went really smoothly. The code that was provided by the Bootcamp activities provided a good base for how to do the basic functions based off the syntax from MySQL. 
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/acm4219/My-Employee-Tracker/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### Credits
+I have the code provided by the Bootcamp and the interactions between fellow students and instructors that made this application work properly.
