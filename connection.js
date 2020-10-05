@@ -3,9 +3,11 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 var figlet = require("figlet");
 const cTable = require("console.table");
+//the const below is connected to the config.js that goes along with keeping your username and password separated you'll need to add the config.js to your .gitignore so no one can see your information
 const { user, password } = require("./config");
 const connection = mysql.createConnection({
   host: "localhost",
+  // you place the key words from the const above into the user and password portion of the connection const
   user: user,
   password: password,
   database: "employees",
